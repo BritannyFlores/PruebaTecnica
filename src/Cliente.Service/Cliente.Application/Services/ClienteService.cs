@@ -1,16 +1,20 @@
 ﻿using Cliente.Application.DTOs;
 using Cliente.Application.Exceptions;
 using Cliente.Application.Interfaces;
+using MassTransit;
+using Shared.Contracts.Events;
 
 namespace Cliente.Application.Services;
 
 public class ClienteService : IClienteService
 {
     private readonly IClienteRepository _repository;
+    private readonly IPublishEndpoint _publishEndpoint;
 
-    public ClienteService(IClienteRepository repository)
+    public ClienteService(IClienteRepository repository, IPublishEndpoint publishEndpoint)
     {
         _repository = repository;
+        _publishEndpoint = publishEndpoint;
     }
 
     public async Task<IEnumerable<ClienteDto>> ObtenerTodosAsync()
@@ -49,7 +53,7 @@ public class ClienteService : IClienteService
 
         var creado = await _repository.CrearAsync(cliente);
 
-        // TODO: publicar evento ClienteCreado a RabbitMQ (Fase de comunicación asíncrona)
+        await _publishEndpoint.Publish(new ClienteCreado(creado.ClienteId, creado.Nombre, creado.Estado));
 
         return MapearADto(creado);
     }
@@ -68,7 +72,7 @@ public class ClienteService : IClienteService
 
         await _repository.ActualizarAsync(cliente);
 
-        // TODO: publicar evento ClienteActualizado a RabbitMQ
+        await _publishEndpoint.Publish(new ClienteActualizado(cliente.ClienteId, cliente.Nombre, cliente.Estado));
     }
 
     public async Task EliminarAsync(int clienteId)
@@ -78,7 +82,7 @@ public class ClienteService : IClienteService
 
         await _repository.EliminarAsync(clienteId);
 
-        // TODO: publicar evento ClienteEliminado a RabbitMQ
+        await _publishEndpoint.Publish(new ClienteEliminado(clienteId));
     }
 
     private static ClienteDto MapearADto(Domain.Entities.Cliente cliente)

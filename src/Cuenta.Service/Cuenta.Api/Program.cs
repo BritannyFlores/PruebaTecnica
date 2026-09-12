@@ -4,6 +4,8 @@ using Cuenta.Application.Services;
 using Cuenta.Infrastructure.Persistence;
 using Cuenta.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
+using Cuenta.Infrastructure.Consumers;
+using MassTransit;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,6 +21,28 @@ builder.Services.AddDbContext<CuentaDbContext>(options =>
 
 builder.Services.AddScoped<ICuentaRepository, CuentaRepository>();
 builder.Services.AddScoped<ICuentaService, CuentaService>();
+
+builder.Services.AddScoped<IMovimientoRepository, MovimientoRepository>();
+builder.Services.AddScoped<IMovimientoService, MovimientoService>();
+builder.Services.AddScoped<IReporteService, ReporteService>();
+
+builder.Services.AddMassTransit(x =>
+{
+    x.AddConsumer<ClienteCreadoConsumer>();
+    x.AddConsumer<ClienteActualizadoConsumer>();
+    x.AddConsumer<ClienteEliminadoConsumer>();
+
+    x.UsingRabbitMq((context, cfg) =>
+    {
+        cfg.Host("localhost", "/", h =>
+        {
+            h.Username("guest");
+            h.Password("guest");
+        });
+
+        cfg.ConfigureEndpoints(context);
+    });
+});
 
 var app = builder.Build();
 app.UseMiddleware<ExceptionMiddleware>();

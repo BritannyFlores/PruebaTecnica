@@ -46,4 +46,16 @@ public class CuentaRepository : ICuentaRepository
     {
         return await _context.ClientesReferencia.AnyAsync(c => c.ClienteId == clienteId);
     }
+
+    public async Task<IEnumerable<Domain.Entities.Cuenta>> ObtenerPorClienteAsync(int clienteId)
+    {
+        return await _context.Cuentas
+            .Where(c => c.ClienteId == clienteId)
+            .ToListAsync();
+    }
+
+    public async Task<Domain.Entities.ClienteReferencia?> ObtenerClienteReferenciaAsync(int clienteId)
+    {
+        return await _context.ClientesReferencia.FirstOrDefaultAsync(c => c.ClienteId == clienteId);
+    }
 }
