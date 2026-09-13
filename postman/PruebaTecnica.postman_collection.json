@@ -1,0 +1,488 @@
+{
+  "info": {
+    "_postman_id": "330d95b6-3c01-4f13-9f26-7dd84b6c07ce",
+    "name": "Prueba Técnica Microservicios",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "46791508",
+    "_collection_link": "https://go.postman.co/collection/46791508-330d95b6-3c01-4f13-9f26-7dd84b6c07ce?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "1. Clientes",
+      "item": [
+        {
+          "name": "01 - Crear cliente (happy path)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const response = pm.response.json();\r\npm.collectionVariables.set(\"clienteId\", response.clienteId);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"nombre\": \"Jose Lema\",\r\n  \"genero\": \"Masculino\",\r\n  \"edad\": 35,\r\n  \"identificacion\": \"1234567890\",\r\n  \"direccion\": \"Otavalo sn y principal\",\r\n  \"telefono\": \"098254785\",\r\n  \"contrasena\": \"1234\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{cliente_url}}/clientes",
+              "host": [
+                "{{cliente_url}}"
+              ],
+              "path": [
+                "clientes"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "02 - Crear cliente (identificacion duplicada - debe fallar)",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"nombre\": \"Jose Lema Duplicado\",\r\n  \"genero\": \"Masculino\",\r\n  \"edad\": 35,\r\n  \"identificacion\": \"1234567890\",\r\n  \"direccion\": \"Otra direccion\",\r\n  \"telefono\": \"098254785\",\r\n  \"contrasena\": \"1234\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{cliente_url}}/clientes",
+              "host": [
+                "{{cliente_url}}"
+              ],
+              "path": [
+                "clientes"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "03 - Listar clientes",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{cliente_url}}/clientes",
+              "host": [
+                "{{cliente_url}}"
+              ],
+              "path": [
+                "clientes"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "04 - Obtener cliente por Id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{cliente_url}}/clientes/{{clienteId}}",
+              "host": [
+                "{{cliente_url}}"
+              ],
+              "path": [
+                "clientes",
+                "{{clienteId}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "05 - Obtener cliente por Id (no existe - debe fallar)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{cliente_url}}/clientes/999999",
+              "host": [
+                "{{cliente_url}}"
+              ],
+              "path": [
+                "clientes",
+                "999999"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "06 - Actualizar cliente",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"nombre\": \"Jose Lema Actualizado\",\r\n  \"genero\": \"Masculino\",\r\n  \"edad\": 36,\r\n  \"direccion\": \"Nueva direccion 123\",\r\n  \"telefono\": \"098254785\",\r\n  \"estado\": true\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{cliente_url}}/clientes/{{clienteId}}",
+              "host": [
+                "{{cliente_url}}"
+              ],
+              "path": [
+                "clientes",
+                "{{clienteId}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "07 - Eliminar cliente",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{cliente_url}}/clientes/{{clienteId}}",
+              "host": [
+                "{{cliente_url}}"
+              ],
+              "path": [
+                "clientes",
+                "{{clienteId}}"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "2. Cuentas",
+      "item": [
+        {
+          "name": "01 - Crear cuenta (happy path)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const response = pm.response.json();\r\npm.collectionVariables.set(\"numeroCuenta\", response.numeroCuenta);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"numeroCuenta\": \"478758\",\r\n  \"tipoCuenta\": \"Ahorros\",\r\n  \"saldoInicial\": 2000,\r\n  \"clienteId\": {{clienteId}}\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{cuenta_url}}/cuentas",
+              "host": [
+                "{{cuenta_url}}"
+              ],
+              "path": [
+                "cuentas"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "02 - Crear cuenta (numero duplicado - debe fallar)",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"numeroCuenta\": \"478758\",\r\n  \"tipoCuenta\": \"Corriente\",\r\n  \"saldoInicial\": 100,\r\n  \"clienteId\": {{clienteId}}\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{cuenta_url}}/cuentas",
+              "host": [
+                "{{cuenta_url}}"
+              ],
+              "path": [
+                "cuentas"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "03 - Crear cuenta (cliente inexistente - debe fallar)",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"numeroCuenta\": \"999999\",\r\n  \"tipoCuenta\": \"Ahorros\",\r\n  \"saldoInicial\": 500,\r\n  \"clienteId\": 999999\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{cuenta_url}}/cuentas",
+              "host": [
+                "{{cuenta_url}}"
+              ],
+              "path": [
+                "cuentas"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "04 - Listar cuentas",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{cuenta_url}}/cuentas",
+              "host": [
+                "{{cuenta_url}}"
+              ],
+              "path": [
+                "cuentas"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "05 - Obtener cuenta por numero",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{cuenta_url}}/cuentas/{{numeroCuenta}}",
+              "host": [
+                "{{cuenta_url}}"
+              ],
+              "path": [
+                "cuentas",
+                "{{numeroCuenta}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "06 - Actualizar cuenta",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"tipoCuenta\": \"Corriente\",\r\n  \"estado\": true\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{cuenta_url}}/cuentas/{{numeroCuenta}}",
+              "host": [
+                "{{cuenta_url}}"
+              ],
+              "path": [
+                "cuentas",
+                "{{numeroCuenta}}"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "3. Movimientos",
+      "item": [
+        {
+          "name": "01 - Crear movimiento - retiro (happy path)",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"numeroCuenta\": \"{{numeroCuenta}}\",\r\n  \"tipoMovimiento\": \"Retiro\",\r\n  \"valor\": -575\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{cuenta_url}}/movimientos",
+              "host": [
+                "{{cuenta_url}}"
+              ],
+              "path": [
+                "movimientos"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "02 - Crear movimiento - deposito (happy path)",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"numeroCuenta\": \"{{numeroCuenta}}\",\r\n  \"tipoMovimiento\": \"Deposito\",\r\n  \"valor\": 300\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{cuenta_url}}/movimientos",
+              "host": [
+                "{{cuenta_url}}"
+              ],
+              "path": [
+                "movimientos"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "03 - Crear movimiento (saldo no disponible - debe fallar)",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"numeroCuenta\": \"{{numeroCuenta}}\",\r\n  \"tipoMovimiento\": \"Retiro\",\r\n  \"valor\": -999999\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{cuenta_url}}/movimientos",
+              "host": [
+                "{{cuenta_url}}"
+              ],
+              "path": [
+                "movimientos"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "04 - Listar movimientos por cuenta",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{cuenta_url}}/movimientos/{{numeroCuenta}}",
+              "host": [
+                "{{cuenta_url}}"
+              ],
+              "path": [
+                "movimientos",
+                "{{numeroCuenta}}"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "4. Reportes",
+      "item": [
+        {
+          "name": "01 - Estado de cuenta",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{cuenta_url}}/reportes?fechaInicio=2022-01-01&fechaFin=2026-12-31&cliente={{clienteId}}",
+              "host": [
+                "{{cuenta_url}}"
+              ],
+              "path": [
+                "reportes"
+              ],
+              "query": [
+                {
+                  "key": "fechaInicio",
+                  "value": "2022-01-01"
+                },
+                {
+                  "key": "fechaFin",
+                  "value": "2026-12-31"
+                },
+                {
+                  "key": "cliente",
+                  "value": "{{clienteId}}"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "cliente_url",
+      "value": "http://localhost:5001"
+    },
+    {
+      "key": "cuenta_url",
+      "value": "http://localhost:5002"
+    },
+    {
+      "key": "clienteId",
+      "value": ""
+    },
+    {
+      "key": "numeroCuenta",
+      "value": ""
+    }
+  ]
+}

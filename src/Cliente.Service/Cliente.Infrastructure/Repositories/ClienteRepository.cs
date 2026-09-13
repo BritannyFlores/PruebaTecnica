@@ -33,7 +33,6 @@ public class ClienteRepository : IClienteRepository
 
     public async Task ActualizarAsync(Domain.Entities.Cliente cliente)
     {
-        _context.Clientes.Update(cliente);
         await _context.SaveChangesAsync();
     }
 
