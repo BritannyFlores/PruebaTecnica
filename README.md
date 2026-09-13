@@ -150,7 +150,7 @@ Adicionalmente se implementó:
 
 ```bash
 
-git clone <URL-del-repositorio>
+git clone https://github.com/BritannyFlores/PruebaTecnica.git
 
 cd PruebaTecnica
 
@@ -243,25 +243,19 @@ La colección se encuentra en `postman/PruebaTecnica.postman_collection.json` e 
 
 ### Orden recomendado de ejecución
 
-
-
 La colección usa datos fijos (identificación y número de cuenta), pensada para ejecutarse **una sola vez sobre una base de datos limpia**:
 
-
-
-1. Carpeta `1. Clientes` (requests 01 a 07, en orden)
+1. Carpeta `1. Clientes` — ejecutar únicamente las requests **01 a 06** en este punto (dejar `07 - Eliminar cliente` para el final)
 2. Carpeta `2. Cuentas` (requests 01 a 06, en orden)
 3. Carpeta `3. Movimientos` (requests 01 a 04, en orden)
 4. Carpeta `4. Reportes`
-
-
+5. Carpeta `1. Clientes`, request `07 - Eliminar cliente` (al final, una vez completadas todas las pruebas anteriores)
 
 > Varias requests están diseñadas intencionalmente para demostrar validaciones de negocio y devuelven un código de error esperado (identificadas en su nombre, por ejemplo *"identificacion duplicada - debe fallar"*). Esto es el comportamiento correcto, no un fallo del sistema.
 
-
-
 > Si la colección se ejecuta una segunda vez sin reiniciar la base de datos, las requests de creación (`01`) también devolverán error de duplicado — la validación seguirá siendo correcta, pero conviene reiniciar los datos (`docker-compose down -v` seguido de `docker-compose up --build` y aplicar migraciones de nuevo) para repetir el flujo completo desde cero.
 
+> **Importante:** `07 - Eliminar cliente` debe ejecutarse al final de toda la colección. Si se corre justo después de `01 - Crear cliente`, las carpetas de Cuentas, Movimientos y Reportes fallarán porque el cliente ya no existirá en `ClientesReferencia`.
 
 
 ## Pruebas automatizadas
@@ -297,25 +291,45 @@ El archivo `BaseDatos.sql`, ubicado en la raíz del proyecto, contiene el script
 
 
 PruebaTecnica/
+
 ├── docker-compose.yml
+
 ├── BaseDatos.sql
+
 ├── README.md
+
 ├── postman/
+
 │ └── PruebaTecnica.postman_collection.json
+
 └── src/
+
 ├── Shared.Contracts/
+
 │ └── Events/ - Eventos compartidos entre microservicios
+
 ├── Cliente.Service/
+
 │ ├── Cliente.Domain/ - Entidades: Persona, Cliente
+
 │ ├── Cliente.Application/ - Services, DTOs, Interfaces, Exceptions
+
 │ ├── Cliente.Infrastructure/ - DbContext, Repositories, MassTransit
+
 │ ├── Cliente.Api/ - Controllers, Middleware, Dockerfile
+
 │ └── Cliente.Tests/ - Pruebas unitarias e integración
+
 └── Cuenta.Service/
+
 ├── Cuenta.Domain/ - Entidades: Cuenta, Movimiento, ClienteReferencia
+
 ├── Cuenta.Application/ - Services, DTOs, Interfaces, Exceptions
+
 ├── Cuenta.Infrastructure/ - DbContext, Repositories, MassTransit, Consumers
+
 ├── Cuenta.Api/ - Controllers, Middleware, Dockerfile
+
 └── Cuenta.Tests/
 
 
