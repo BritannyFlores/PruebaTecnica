@@ -350,19 +350,6 @@ PruebaTecnica/
 
 
 
-## Posibles mejoras futuras
-
-
-
-- Especificar precisión explícita (`HasPrecision`) en las propiedades `decimal` para evitar truncamientos silenciosos.
-
-- Agregar reintentos y circuit breaker en la comunicación asíncrona para mayor resiliencia.
-
-- Externalizar credenciales sensibles (contraseña de SQL Server, credenciales de RabbitMQ) mediante variables de entorno o un gestor de secretos, en vez de tenerlas en `docker-compose.yml`.
-
-
-
-
 
 
 
