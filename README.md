@@ -16,7 +16,7 @@
 
 
 
-Sistema bancario compuesto por 2 microservicios independientes desarrollados en .NET 8, que se comunican de forma asíncrona mediante RabbitMQ. El proyecto sigue los principios de Clean Architecture y aplica el patrón Repository, con manejo centralizado de excepciones, pruebas automatizadas y despliegue completo en contenedores Docker.
+Sistema bancario compuesto por 2 microservicios independientes desarrollados en .NET 9, que se comunican de forma asíncrona mediante RabbitMQ. El proyecto sigue los principios de Clean Architecture y aplica el patrón Repository, con manejo centralizado de excepciones, pruebas automatizadas y despliegue completo en contenedores Docker.
 
 
 
@@ -118,9 +118,9 @@ Adicionalmente se implementó:
 
 
 
-- [Docker Desktop](https://www.docker.com/products/docker-desktop/) instalado y corriendo
+- [Docker Desktop] instalado y corriendo
 
-- [.NET 8 SDK](https://dotnet.microsoft.com/download/dotnet/8.0) (solo si se desea aplicar migraciones o correr pruebas fuera de Docker)
+- [.NET 9 SDK](solo si se desea aplicar migraciones o correr pruebas fuera de Docker)
 
 - Puertos libres antes de levantar el proyecto:
 
